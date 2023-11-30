@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .epr-main{
+  background:#090a12 !important;
+  box-shadow: 2px 1px 0 0 #3415af!important; 
+  border-color:#3415af!important;
+  }
+ .epr-search{
+    background:#090a12 !important;
+  }
+  .epr-preview{
+    display:none;
+  }
+  
+.EmojiPickerReact --epr-category-label-bg-color{
+   background:#090a12;
+} */
+
+.epr-main{
+  margin:0 !important;
+}
