@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-
-const messageSchema = new  mongoose.Schema({
+import {IMessageModel} from "../types/userType"
+const messageSchema = new  mongoose.Schema<IMessageModel>({
   message:{
     text:{
       type:String,

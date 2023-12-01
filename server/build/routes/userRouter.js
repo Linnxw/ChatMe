@@ -10,5 +10,6 @@ router.post("/auth/register", userController_1.registerUser);
 router.post("/auth/login", userController_1.loginUser);
 router.post("/auth/setavatar/:id", userController_1.setAvatarImage);
 router.get("/all/:id", userController_1.getAllUser);
+router.get("/:id", userController_1.getUserById);
 exports.default = router;
 //# sourceMappingURL=userRouter.js.map

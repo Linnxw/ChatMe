@@ -7,7 +7,7 @@ type InputProps = {
   setIsShowEmoji:() => void
   sendMessage:() => void
 }
-const ChatInput:React.FC = ({onChange,value,setIsShowEmoji,sendMessage}) => {
+const ChatInput:React.FC<InputProps> = ({onChange,value,setIsShowEmoji,sendMessage}) => {
   return (
     <section className="flex py-2 text-putihTerang font-sans h-auto w-screen items-center">
       <div onClick={setIsShowEmoji} className="h-9 flex items-center justify-center w-[10%]">

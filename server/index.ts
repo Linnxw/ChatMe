@@ -5,6 +5,7 @@ import cors from "cors"
 import {userRouter,messageRouter} from "./routes"
 import {Server,Socket} from "socket.io"
 import http from "http"
+import {IMessage} from "./types/userType"
 dotenv.config()
 
 
@@ -12,22 +13,20 @@ const app:Application = express()
 const server = http.createServer(app)
 const io = new Server(server,{
   cors:{
-    origin:"http://localhost:5173"
+    origin:"http://localhost:5173",
+    credentials:true
   }
 })
 
 const onlineUsers:any = new Map()
 io.on("connection",(socket: Socket)=>{
-  socket.on("add-user",(userId)=>{
+  socket.on("add-user",(userId: string)=>{
     onlineUsers.set(userId,socket.id)
   })
-  socket.on("send-msg",(data)=>{
+  socket.on("send-msg",(data: IMessage)=>{
     const sendUserSocket = onlineUsers.get(data.to)
-    console.log("online",onlineUsers)
-    console.log("luar",sendUserSocket)
     if(sendUserSocket){
-      console.log("masuk",sendUserSocket)
-      socket.to(sendUserSocket).emit("msg-recieve",data.msg)
+      socket.to(sendUserSocket).emit("msg-recieve",data.message)
     }
   })
 })
@@ -50,22 +49,3 @@ server.listen(process.env.PORT,()=>{
   console.log("Server runing in Port:"+ process.env.PORT)
 })
 
-
-// const io = new Server(9000);
-// const onlineUser: any = new Map()
-// 
-// io.on('connection',(socket: Socket)=>{
-//   console.log("socket conected")
-//   const chatSocket: any = socket
-//   socket.on("add-user",(userId:string)=>{
-//     onlineUser.set(userId,socket.id)
-//   })
-//   
-//   socket.on("send-msg",(data:any)=>{
-//     const sendUserSocket = onlineUser.get(data.to)
-//     if(sendUserSocket){
-//       socket.to(sendUserSocket).emit("msg-recieve",data.msg)
-//     }
-//   })
-// })
-// 

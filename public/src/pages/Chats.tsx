@@ -1,25 +1,14 @@
-import React,{useState,useEffect,useRef} from "react"
+import React,{useState,useEffect} from "react"
 import {useNavigate} from "react-router-dom"
-import Container from "@/components/fragments/Container"
-import Contact from "@/components/fragments/Contact"
 import axios from "@/config/axios"
 import socket from "@/config/socket"
-type UserChat = {
-  _id: string
-  avatarImage: string
-  username: string 
-}[]
+import Container from "@/components/fragments/Container"
+import Contact from "@/components/fragments/Contact"
+import {DataUser,ICurrentUser} from "@/types/userType"
 
-type CurrentUser = {
-  _id: string
-  avatarImage: string
-  username: string 
-  isAvatarImageSet: boolean
-  password : ""
-}
-const Chats:React.FC = () => {
-  const [chats, setChats] = useState<UserChat>([])
-  const [currentUser, setCurrentUser] = useState<CurrentUser>({
+const Chats: React.FC = () => {
+  const [chats, setChats] = useState<DataUser[]>([])
+  const [currentUser, setCurrentUser] = useState<ICurrentUser>({
     _id: "",
     avatarImage: "",
     username: "" ,
@@ -38,10 +27,8 @@ const Chats:React.FC = () => {
   }, [])
   
   
-  
   useEffect(()=>{
     if(currentUser._id){
-  
       socket.emit("add-user",currentUser._id)
       getAllUser()
     }

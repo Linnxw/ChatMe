@@ -1,5 +1,6 @@
 import {Request,Response} from "express"
 import Message from "../models/messageModel"
+import {IMessage} from "../types/userType"
 export const getAllMessage = async (req:Request,res:Response)=>{
   const {from,to} = req.body
   try{
@@ -19,7 +20,7 @@ export const getAllMessage = async (req:Request,res:Response)=>{
   }
 }
 export const sendMessage = async (req:Request,res:Response)=>{
-  const {from,to,message} = req.body
+  const {from,to,message}: IMessage = req.body
   try{
     const createMessage = await Message.create({
       message:{

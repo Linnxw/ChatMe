@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUser = exports.setAvatarImage = exports.loginUser = exports.registerUser = void 0;
+exports.getUserById = exports.getAllUser = exports.setAvatarImage = exports.loginUser = exports.registerUser = void 0;
 const userModel_1 = __importDefault(require("../models/userModel"));
 const password_hash_1 = __importDefault(require("password-hash"));
 const userService_1 = require("../services/userService");
@@ -82,4 +82,14 @@ const getAllUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getAllUser = getAllUser;
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield userModel_1.default.findOne({ _id: req.params.id }).select(["_id", "username", "avatarImage"]);
+        res.status(200).json({ status: true, user, msg: "succes get user by id: " + req.params.id });
+    }
+    catch (err) {
+        console.log(err.message);
+    }
+});
+exports.getUserById = getUserById;
 //# sourceMappingURL=userController.js.map

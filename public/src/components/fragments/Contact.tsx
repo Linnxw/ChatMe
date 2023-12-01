@@ -1,6 +1,6 @@
 import React from 'react'
 import {useNavigate} from "react-router-dom"
-import {DataUser} from "@/types/userTypes"
+import {DataUser} from "@/types/userType"
 type ContactProps = {
      data:DataUser
 }

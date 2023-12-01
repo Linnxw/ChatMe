@@ -1,35 +1,58 @@
 import React,{useEffect,useState,useRef} from 'react'
-import Container from "@/components/fragments/Container"
-import Contact from "@/components/fragments/Contact"
 import ChatInput from "@/components/fragments/ChatInput"
 import ChatView from "@/components/fragments/ChatView"
 import BubbleChat from "@/components/fragments/BubbleChat"
 import axios from "@/config/axios"
-import {useParams} from "react-router-dom"
+import {useParams,useNavigate} from "react-router-dom"
 import socket from "@/config/socket"
-import {DataUser} from "@/types/userTypes"
+import {DataUser,ICurrentUser,IMessage} from "@/types/userType"
 import EmojiPicker from 'emoji-picker-react';
 const Chat:React.FC = () => {
   const [isShowEmoji,setIsShowEmoji] = useState<boolean>(false)
   const [input,setInput] = useState<string>("")
-  const [currentUser,setCurrentUser]=useState<any>({})
+  const [currentUser,setCurrentUser]=useState<ICurrentUser>({
+    _id: "",
+    avatarImage: "",
+    username: "",
+    isAvatarImageSet: false,
+    password : ""
+  })
   const [currentChat, setCurrentChat] = useState<DataUser>({
     _id:"",
     username:"",
     avatarImage:""
   })
-  const [message,setMessage] = useState<any>([])
-  const [arivalMessage,setArivalMessage] = useState<any>({})
+  const [message,setMessage] = useState<IMessage[]>([])
+  const [arivalMessage,setArivalMessage] = useState<IMessage>({
+    fromSelf:false,
+    message:""
+  })
+  
   const {id} = useParams()
+  const navigate = useNavigate()
   
   useEffect(()=>{
     getCurrentChatUser()
   },[id])
   
+  const scrollRef = useRef<HTMLElement>()
+  
+  useEffect(() => {
+    if(scrollRef.current){
+      console.log("masuk")
+      scrollRef.current.scrollIntoView({
+      behavior:'smooth'
+    })
+    }
+  },[message])
+  
   useEffect(()=>{
     const user = localStorage.getItem("chat-app")
-    setCurrentUser(JSON.parse(user))
-  
+    if(user){
+      setCurrentUser(JSON.parse(user))
+    }else{
+      navigate("/login")
+    }
   },[])
   
   useEffect(()=>{
@@ -39,10 +62,10 @@ const Chat:React.FC = () => {
   },[currentUser,currentChat])
   
   useEffect(()=>{
-    socket.on("msg-recieve",(msg)=>{
+    socket.on("msg-recieve",(message: string)=>{
     setArivalMessage({
       fromSelf:false,
-      message:msg
+      message
     })
     })
   },[socket])
@@ -73,14 +96,14 @@ const Chat:React.FC = () => {
     }
   }
   
-  const handleEmojiClick = ({emoji}) => {
+  const handleEmojiClick = ({emoji}:any) => {
     setInput(currentInput=>currentInput+emoji)
   }
   
   
   const sendMessage = async():Promise<void> => {
     try{
-     const response = await axios.post("api/message/send",{
+     await axios.post("api/message/send",{
         from:currentUser._id,
         to:currentChat._id,
         message:input
@@ -88,7 +111,7 @@ const Chat:React.FC = () => {
     socket.emit("send-msg",{
       from:currentUser._id,
       to:currentChat._id,
-      msg:input
+      message:input
     })
     const msgs = [...message]
     msgs.push({
@@ -108,7 +131,7 @@ const Chat:React.FC = () => {
    <ChatView.Container>
       {
      message?.map((element:any,index:number)=>{
-       return <BubbleChat data={element} key={index}/>
+       return <BubbleChat scrollRef={scrollRef} data={element} key={index}/>
      })
      }
    </ChatView.Container>
