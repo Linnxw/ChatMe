@@ -10,12 +10,12 @@ const cors_1 = __importDefault(require("cors"));
 const routes_1 = require("./routes");
 const socket_io_1 = require("socket.io");
 const http_1 = __importDefault(require("http"));
-dotenv_1.default.config();
+dotenv_1.default.config;
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://chatmeapi.linnxw.my.id",
         credentials: true
     }
 });
@@ -40,6 +40,12 @@ mongoose_1.default.connect(process.env.DB)
     console.log("Mongodb connect!");
 }).catch((err) => {
     console.log("mongoodb disconect", err);
+});
+app.get("/", (req, res) => {
+    res.status(200).json({
+        status: true,
+        msg: "succes conect api"
+    });
 });
 app.use("/api/user/", routes_1.userRouter);
 app.use("/api/message/", routes_1.messageRouter);

@@ -7,6 +7,7 @@ import {useParams,useNavigate} from "react-router-dom"
 import socket from "@/config/socket"
 import {DataUser,ICurrentUser,IMessage} from "@/types/userType"
 import EmojiPicker from 'emoji-picker-react';
+import { Theme } from 'emoji-picker-react'
 const Chat:React.FC = () => {
   const [isShowEmoji,setIsShowEmoji] = useState<boolean>(false)
   const [input,setInput] = useState<string>("")
@@ -145,7 +146,7 @@ const Chat:React.FC = () => {
         isShowEmoji && 
         <EmojiPicker
         onEmojiClick={handleEmojiClick}
-        theme='dark'
+        theme={Theme.DARK}
         searchDisabled={true}
       />
       }

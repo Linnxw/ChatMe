@@ -47,7 +47,7 @@ const SetAvatar:React.FC = () =>{
     }else{
       const user = JSON.parse(localStorage.getItem("chat-app")!)
       const avatarImage: string = avatars[avatarSelect]
-      const {data} = await axios.post("http://localhost:9090/api/user/auth/setavatar/"+user._id,{
+      const {data} = await axios.post("https://chatmeapi.linnxw.my.id/api/user/auth/setavatar/"+user._id,{
         avatarImage
         })
       user.avatarImage = data.avatarImage

@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom/client'
-import eruda from "eruda"
 import {Register,Login,Protect,SetAvatar,Chats,Chat} from "./pages"
 
 import "./index.css"
@@ -7,7 +6,7 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom"
-eruda.init()
+
 const router = createBrowserRouter([
   {
     path:"/",

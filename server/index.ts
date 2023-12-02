@@ -1,19 +1,18 @@
 import express,{Application} from "express"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import cors from "cors"
-import {userRouter,messageRouter} from "./routes"
-import {Server,Socket} from "socket.io"
+import cors from"cors"
+import {IMessage} from "./types//userType"
+import { userRouter, messageRouter } from"./routes"
+import { Server,Socket } from "socket.io"
 import http from "http"
-import {IMessage} from "./types/userType"
-dotenv.config()
-
+dotenv.config
 
 const app:Application = express()
 const server = http.createServer(app)
 const io = new Server(server,{
   cors:{
-    origin:"http://localhost:5173",
+    origin:process.env.ORIGIN_SOCKET_IO,
     credentials:true
   }
 })
@@ -41,6 +40,12 @@ mongoose.connect(process.env.DB!)
   console.log("mongoodb disconect",err)
 })
 
+app.get("/",(req:express.Request,res:express.Response)=>{
+  res.status(200).json({
+    status:true,
+    msg:"succes conect api"
+  })
+})
 app.use("/api/user/",userRouter)
 app.use("/api/message/",messageRouter)
 
